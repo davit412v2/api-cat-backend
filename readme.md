@@ -13,7 +13,6 @@ Este es un proyecto backend construido con **Spring Boot**, que se conecta a [Th
 - 🔎 Búsqueda de razas por ID o nombre  
 - 📦 Arquitectura modular con buenas prácticas (SOLID, Clean Code)
 
----
 
 ## 📌 Endpoints principales
 
