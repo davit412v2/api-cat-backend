@@ -12,6 +12,10 @@ import com.example.catbackend.catbackend.security.JwtSecurity;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Servicio que maneja las operaciones relacionadas con los usuarios,
+ * incluyendo el registro y la autenticación.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserInterfaceService {
@@ -20,6 +24,11 @@ public class UserService implements UserInterfaceService {
     private final PasswordEncoder passwordEncoder;
     private final JwtSecurity jwtSecurity;
 
+    /**
+     * Registra un nuevo usuario en el sistema.
+     *
+     * @param user objeto UserDTO que contiene los datos del usuario a registrar
+     */
     @Override
     public void register(UserDTO user) {
         User userBuilder = User.builder()
@@ -28,14 +37,17 @@ public class UserService implements UserInterfaceService {
                 .password(passwordEncoder.encode(user.getPassword()))
                 .build();
         respository.save(userBuilder);
-       
-        System.out.println("Register...................");
     }
 
+    /**
+     * Autentica a un usuario y genera un token JWT si las credenciales son válidas.
+     *
+     * @param request objeto LoginRequest con el nombre de usuario y contraseña
+     * @return un objeto LoginResponse con el token generado
+     * @throws RuntimeException si el usuario no existe o la contraseña es incorrecta
+     */
     @Override
     public LoginResponse login(LoginRequest request) {
-        System.out.println("login...................");
-
         User user = respository.findByUserName(request.getUserName())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -44,9 +56,6 @@ public class UserService implements UserInterfaceService {
         }
 
         String token = jwtSecurity.generateToken(user.getUserName());
-        
-           System.out.println("login with token...................");
         return new LoginResponse(token);
     }
-
 }

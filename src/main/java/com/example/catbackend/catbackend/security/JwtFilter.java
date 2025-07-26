@@ -1,6 +1,5 @@
 package com.example.catbackend.catbackend.security;
 
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +12,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collections;
 
+/**
+ * Filtro que intercepta cada solicitud HTTP para validar el token JWT.
+ * Si el token es válido, se configura la autenticación en el contexto de
+ * seguridad de Spring.
+ */
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtSecurity jwtSecurity;
@@ -21,10 +25,18 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtSecurity = jwtSecurity;
     }
 
+    /**
+     * Filtra cada solicitud entrante verificando si hay un token JWT válido en la
+     * cabecera Authorization.
+     *
+     * @param request     solicitud HTTP entrante
+     * @param response    respuesta HTTP
+     * @param filterChain cadena de filtros que deben ejecutarse
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
         String token = null;
